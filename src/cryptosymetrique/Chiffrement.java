@@ -14,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.Cipher;
+import javax.crypto.CipherOutputStream;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
@@ -45,14 +46,19 @@ public class Chiffrement implements IChiffrement {
             FileInputStream fis = new FileInputStream(fileToEncrypt);
             byte[] tampon = new byte[1024];
             FileOutputStream fos = new FileOutputStream(fileDest);
+            CipherOutputStream cos = new CipherOutputStream(fos, cipher);
             int tailleLue=0;
             tailleLue=fis.read(tampon);
             
             while(tailleLue!=-1){
                     
-                fos.write(tampon, 0, tailleLue);
-             tailleLue=fis.read(tampon);    
+                cos.write(tampon, 0, tailleLue);
+                tailleLue=fis.read(tampon);    
             }
+            cos.close();
+            fis.close();
+            fos.close();
+            return true;
         } catch (Exception ex) {
             Logger.getLogger(Chiffrement.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -61,7 +67,8 @@ public class Chiffrement implements IChiffrement {
 
     @Override
     public boolean runCipher(String keyFile, String fileToEncrypt, String fileDest) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Cipher c = this.getCipher(keyFile);
+        return this.Process(fileToEncrypt, fileDest, c);
     }
     
 }

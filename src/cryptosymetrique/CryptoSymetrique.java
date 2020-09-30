@@ -5,6 +5,8 @@
  */
 package cryptosymetrique;
 
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author Oumy Gueye
@@ -15,10 +17,17 @@ public class CryptoSymetrique {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       //new KeyGeneration().keygeneration("./essai.key");
+       new KeyGeneration().keygeneration("./Secret-Key.key");
         
-        Chiffrement chiffrement = new Chiffrement();
-        chiffrement.Process("./diodio.pdf","./ndeye.key",null);
+       Chiffrement chiffrement = new Chiffrement();
+       chiffrement.runCipher("./Secret-Key.key","./mohamed.txt", "./CHIFFRER.txt");
+        
+       Dechiffrement dechiffrement = new Dechiffrement();
+       dechiffrement.runCipher("./Secret-Key.key","./CHIFFRER.txt", "./DECHIFFRER.txt");
+       
+       // JFileChooser jfc = new JFileChooser();
+        //jfc.showSaveDialog(jfc);
+       // jfc.showOpenDialog(jfc);
     }
     
 }
